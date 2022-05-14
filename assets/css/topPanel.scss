@@ -1,0 +1,21 @@
+.top-panel {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    padding: 20px 0;
+    text-align: center;
+    z-index: 1000;
+    color: #fff;
+    font-weight: 600;
+    &.panel-error {
+        background-color: tomato;    
+    }
+    &.panel-success {
+        background-color: green;
+    }
+    &.panel-info {
+        background-color: lightblue;
+        color: #232323;
+    }
+}
