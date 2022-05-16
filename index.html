@@ -38,17 +38,24 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Status</th>
                             <th>Qty</th>
                             <th>Price</th>
                             <th>Total</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="cart-tbody"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">TOTAL</td> <!-- rowspan - розтягнути на рядки -->
+                            <td id="cart-total"></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
 
         </div>
-
     </div>
 
  <script src="assets/js/main.js"></script>

@@ -9,7 +9,10 @@ const topPanel = {
     },
     hide: function(){
         setTimeout(function(){
-            document.getElementById('top-panel').remove();
+            if(document.getElementById('top-panel') !== null){
+                document.getElementById('top-panel').remove();
+            }
+            // document.getElementById('top-panel').remove();
         }, 3000);
     },
     error: function(text){
@@ -25,6 +28,8 @@ const topPanel = {
 
 
 // topPanel.error("Lorem ipsum");
+// topPanel.success("Lorem ipsum");
+// topPanel.info("Lorem ipsum");
 
 /**
    {
@@ -48,7 +53,7 @@ const CART = [
     {
         name: 'Milk',
         qty: 2,
-        isBuy: false,
+        isBuy: true,
         price: 23.45,
         total: 46.9
     }
@@ -113,6 +118,7 @@ function checkAndAddToCart(){
     if(valid){
         addToCart(name, qty, price);
         // topPanel.success("Product succesfully added");
+        //Занулення даних панельки, після того як відбулося додавання товару
         document.getElementById('product_name').value = '';
         document.getElementById('product_qty').value = '1';
         document.getElementById('product_price').value = '';
@@ -125,11 +131,112 @@ function viewCartTable(){
         html +=`
         <tr>
             <td>${product.name}</td>
+            <td>${product.isBuy ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-danger">No</span>'}</td>
             <td>${product.qty}</td>
             <td>${product.price.toFixed(2)}</td>
             <td>${product.total.toFixed(2)}</td>
+            <td>
+                <button type="button" class="btn btn-danger" onclick="askProductDelete('${product.name}')">&times;</button>
+            </td>
         </tr>
         `;
     });
     document.getElementById('cart-tbody').innerHTML = html;
+    document.getElementById('cart-total').innerText = sumTotal();
+
 }
+
+
+function sumTotal(){
+    return CART.reduce((acc, curr)=> {return acc + curr.total;}, 0);
+
+    // return CART.reduce((prev, curr)=>{
+    //     console.log(prev, curr);
+    //     return prev + curr.total;
+    // }, 0);
+
+
+    // let total = 0;
+    // for(let i = 0; i < CART.length; i++){
+    //     total += CART[i].total;
+    // }
+    // return total;
+}
+
+function askProductDelete(name){
+    if(confirm('Delete '+name+'?')){
+        let delIndex = CART.findIndex((el) => el.name === name);
+        CART.splice(delIndex, 1);
+        viewCartTable();
+        topPanel.info("Product successfully deleted");
+    }
+}
+
+
+/////////////////////////////////дроби////////////////////////////////
+// const drobb = {
+//     value1: {
+//         ch: 0,
+//         zn: 0
+//     },
+//     value2: {
+//         ch: 0,
+//         zn: 0
+//     },
+//     setValue: function (key, chisl, znam){
+//         this[key].ch = chisl;
+//         this[key].zn = znam;
+//         // this[key] = {
+//         //     ch: chisl,
+//         //     zn: znam
+//         // }
+//     },
+//     multiply: function(){
+//         const result = {
+//             ch: this.value1.ch * this.value2.ch,
+//             zn: this.value1.zn * this.value2.zn
+//         };
+//         return this.short(result);
+//     },
+//     divide: function(){
+//         const result = {
+//             ch: this.value1.ch * this.value2.zn,
+//             zn: this.value1.zn * this.value2.ch
+//         };
+//         return this.short(result);
+//     },
+//     short: function(rez){
+//         //TODO: знайти найбільший загальний дільник (якщо він є, то ділимо на нього і повертаємо результат)
+//         let nzd = 0;
+//         for(let i = Math.min(rez.ch, rez.zn); i > 0; i--){
+//             if(rez.ch % i === 0 && rez.zn % i === 0){
+//                 nzd = i;
+//                 break;
+//             }
+//         }
+
+//         // if(rez.ch%rez.zn===0){
+//         if(nzd !== 0){
+//             // return rez.ch / rez.zn;
+//             return {
+//                 ch: rez.ch / nzd,
+//                 zn: rez.zn / nzd
+//             };
+//         }else{
+//             return rez;
+//         }
+//     }
+// }
+
+// drobb.setValue('value1', 1, 2);
+// drobb.setValue('value2', 3, 12);
+// // drobb.setValue('value3', 4, 6);
+
+// const multip = drobb.multiply();
+// console.log(multip);
+
+
+// const div = drobb.divide();
+// console.log(div);
+
+/////////////////////////////////дроби////////////////////////////////
