@@ -127,6 +127,18 @@ function checkAndAddToCart(){
 
 function viewCartTable(){
     let html = '';
+    CART.sort((a, b) => Number(b.isBuy) - Number(a.isBuy));
+    // CART.sort((a, b) => {
+    //     if(a.isBuy === b.isBuy){
+    //         return 0;
+    //     }else{
+    //         if(a.isBuy === true){
+    //             return -1;
+    //         }else{
+    //             return 1
+    //         }
+    //     }
+    // })
     CART.forEach(product => {
         html +=`
         <tr>
@@ -136,14 +148,14 @@ function viewCartTable(){
             <td>${product.price.toFixed(2)}</td>
             <td>${product.total.toFixed(2)}</td>
             <td>
+                <button type="button" class="btn btn-primary" onclick="changeProdStatus('${product.name}')">Change status</button>
                 <button type="button" class="btn btn-danger" onclick="askProductDelete('${product.name}')">&times;</button>
             </td>
         </tr>
         `;
     });
     document.getElementById('cart-tbody').innerHTML = html;
-    document.getElementById('cart-total').innerText = sumTotal();
-
+    document.getElementById('cart-total').innerText = sumTotal().toFixed(2);
 }
 
 
@@ -165,12 +177,62 @@ function sumTotal(){
 
 function askProductDelete(name){
     if(confirm('Delete '+name+'?')){
-        let delIndex = CART.findIndex((el) => el.name === name);
+        const delIndex = CART.findIndex((el) => el.name === name);
         CART.splice(delIndex, 1);
         viewCartTable();
         topPanel.info("Product successfully deleted");
     }
 }
+
+function changeProdStatus(name){
+    const statusIndex = CART.findIndex((el) => el.name === name);
+    CART[statusIndex].isBuy = !CART[statusIndex].isBuy;
+    
+    // if(CART[statusIndex].isBuy){
+    //     CART[statusIndex].isBuy = false;
+    // }else{
+    //     CART[statusIndex].isBuy = true;
+    // }
+    // console.log(statusIndex);
+    viewCartTable();
+    topPanel.info("Product status changed");
+}
+
+
+
+// function setSorting(){
+//     const sorting = document.getElementById('sorting').value;
+//     console.log(sorting);
+//     switch(sorting);
+//     return CART.filter().sort()
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /////////////////////////////////дроби////////////////////////////////

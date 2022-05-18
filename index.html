@@ -12,50 +12,70 @@
 
 
     <div class="container mt-4">
-        <div class="card mb-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-6">
-                        <input type="text" class="form-control" placeholder="Enter product name" id="product_name">
+        <div class="row">
+            <div class="col-8">
+                <div class="card mb-4">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" class="form-control" placeholder="Enter product name" id="product_name">
+                            </div>
+                            <div class="col-2">
+                                <input type="number" class="form-control" value="1" id="product_qty">
+                            </div>
+                            <div class="col-2">
+                                <input type="number" class="form-control" placeholder="Price per one" id="product_price">
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-info" onclick="checkAndAddToCart()">Add</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <input type="number" class="form-control" value="1" id="product_qty">
+
+                </div>
+        
+                <div class="card">
+
+                    <div class="card-header"><h4>Products in cart</h4></div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-tbody"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5">TOTAL</td> <!-- rowspan - розтягнути на рядки -->
+                                    <td id="cart-total"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
-                    <div class="col-2">
-                        <input type="number" class="form-control" placeholder="Price per one" id="product_price">
-                    </div>
-                    <div class="col-2">
-                        <button type="button" class="btn btn-info" onclick="checkAndAddToCart()">Add</button>
+        
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <select class="form_control" id="sorting" onchange="setSorting()">
+                            <option value="az">By name a-z</option>
+                            <option value="za">By name z-a</option>
+                            <option value="desc">By total from big</option>
+                            <option value="asc">By total from small </option>
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="card">
-            <div class="card-header"><h4>Products in cart</h4></div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cart-tbody"></tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="5">TOTAL</td> <!-- rowspan - розтягнути на рядки -->
-                            <td id="cart-total"></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-
-        </div>
+        
     </div>
 
  <script src="assets/js/main.js"></script>
