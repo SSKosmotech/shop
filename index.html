@@ -62,15 +62,37 @@
         
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card">
+            <div class="col-4" style="font-family:'Courier New', Courier, monospace;">
+                <div class="card mb-4">
                     <div class="card-body">
                         <select class="form_control" id="sorting" onchange="setSorting()">
                             <option value="az">By name a-z</option>
                             <option value="za">By name z-a</option>
-                            <option value="desc">By total from big</option>
-                            <option value="asc">By total from small </option>
+                            <option value="desc">From highest to lowest total</option>
+                            <option value="asc">From lowest to highest total</option>
                         </select>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h4>Purchased products:</h4></div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-tbody-receipt"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">TOTAL</td> <!-- rowspan - розтягнути на рядки -->
+                                    <td id="cart-total-receipt"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>

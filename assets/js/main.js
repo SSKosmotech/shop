@@ -44,22 +44,31 @@ const topPanel = {
 
 const CART = [
     {
-        name: 'Bread',
-        qty: 1,
-        isBuy: false,
-        price: 15,
-        total: 15
-    },
-    {
         name: 'Milk',
         qty: 2,
         isBuy: true,
         price: 23.45,
         total: 46.9
+    },
+    {
+        name: 'Water',
+        qty: 1,
+        isBuy: true,
+        price: 15,
+        total: 15
+    },
+    {
+        name: 'Bread',
+        qty: 3,
+        isBuy: true,
+        price: 12.15,
+        total: 36.45
     }
 ];
 
 viewCartTable();
+setSorting();
+// viewPurchasedTable(CART);
 
 function addToCart(name, qty, price){
     if(CART.find(el => el.name===name) === undefined){
@@ -81,6 +90,8 @@ function addToCart(name, qty, price){
     }
     // console.log(CART);
     viewCartTable();
+    // setSorting();
+    viewPurchasedTable();
 }
 
 // addToCart('Milk', 2, 23.45);
@@ -180,6 +191,8 @@ function askProductDelete(name){
         const delIndex = CART.findIndex((el) => el.name === name);
         CART.splice(delIndex, 1);
         viewCartTable();
+        setSorting();
+        // viewPurchasedTable(CART);
         topPanel.info("Product successfully deleted");
     }
 }
@@ -195,17 +208,77 @@ function changeProdStatus(name){
     // }
     // console.log(statusIndex);
     viewCartTable();
+    setSorting();
+    // viewPurchasedTable(CART);
     topPanel.info("Product status changed");
 }
 
 
 
-// function setSorting(){
-//     const sorting = document.getElementById('sorting').value;
-//     console.log(sorting);
-//     switch(sorting);
-//     return CART.filter().sort()
-// }
+function setSorting(){
+    const sorting = document.getElementById('sorting').value;
+    let rez = {};
+    switch(sorting){
+        case "az": 
+            rez = CART.filter(el => el.isBuy === true).sort(sortName);
+            console.log(sorting);
+            console.log(rez);
+            break;
+        case "za": 
+            rez = CART.filter(el => el.isBuy === true).sort(sortName).reverse();
+            console.log(sorting);
+            console.log(rez);
+            break;
+        case "desc": 
+            rez = CART.filter(el => el.isBuy === true).sort((a, b) => Number(b.total) - Number(a.total));
+            console.log(sorting);
+            console.log(rez);
+            break;
+        case "asc": 
+            rez = CART.filter(el => el.isBuy === true).sort((a, b) => Number(a.total) - Number(b.total));
+            console.log(sorting);
+            console.log(rez);
+            break;
+    }
+    viewPurchasedTable(rez);
+    return rez;
+}
+
+function sortName(a, b) {
+    if(a.name < b.name){
+        return -1;
+    }else{
+        if(a.name > b.name){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+}
+
+function viewPurchasedTable(sortCART){
+    let html = '';
+    // sortCART = setSorting();
+    // CART = sortCART;
+    sortCART.forEach(product => {
+        html +=`
+        <tr>
+            <td>${product.name}</td>
+            <td>${product.qty}</td>
+            <td>${product.price.toFixed(2)}</td>
+            <td>${product.total.toFixed(2)}</td>
+        </tr>
+        `;
+    });
+    document.getElementById('cart-tbody-receipt').innerHTML = html;
+    document.getElementById('cart-total-receipt').innerText = sumPurchasedTotal(sortCART).toFixed(2);
+}
+
+function sumPurchasedTotal(cart){
+    return cart.reduce((acc, curr)=> {return acc + curr.total;}, 0);
+}
+
+
 
 
 
