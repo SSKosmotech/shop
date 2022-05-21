@@ -362,7 +362,6 @@ function calcDiscount(disc){
 
 function calcDiscountPurchased(disc){
     const {type, value} = disc; //деструктуризація
-    debugger
     const sorting = document.getElementById('sorting').value;
     let sortingCart = sortCart(sorting);
     // setSorting();
