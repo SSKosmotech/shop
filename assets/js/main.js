@@ -155,7 +155,11 @@ function viewCartTable(){
         <tr>
             <td>${product.name}</td>
             <td>${product.isBuy ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-danger">No</span>'}</td>
-            <td>${product.qty}</td>
+            <td>
+                <button class="btn btn-info btn-sm" onclick="changeProductQty('${product.name}', 'dec')">-</button>
+                ${product.qty}
+                <button class="btn btn-info btn-sm" onclick="changeProductQty('${product.name}', 'inc')">+</button>
+            </td>
             <td>${product.price.toFixed(2)}</td>
             <td>${product.total.toFixed(2)}</td>
             <td>
@@ -169,6 +173,24 @@ function viewCartTable(){
     document.getElementById('cart-total').innerText = sumTotal().toFixed(2);
 }
 
+function changeProductQty(name, action){
+    const index = CART.findIndex(el => el.name === name);
+    let newQty = 0;
+    if(action === 'inc'){
+        newQty = CART[index].qty + 1;
+    }else{
+        if(CART[index].qty >= 2){
+            newQty = CART[index].qty - 1;
+        }else{
+            askProductDelete(name);
+            return false;
+        }
+    }
+    CART[index].qty = newQty;
+    CART[index].total = CART[index].price * newQty;
+    viewCartTable();
+    setSorting();
+}
 
 function sumTotal(){
     return CART.reduce((acc, curr)=> {return acc + curr.total;}, 0);
@@ -221,23 +243,23 @@ function setSorting(){
     switch(sorting){
         case "az": 
             rez = CART.filter(el => el.isBuy === true).sort(sortName);
-            console.log(sorting);
-            console.log(rez);
+            // console.log(sorting);
+            // console.log(rez);
             break;
         case "za": 
             rez = CART.filter(el => el.isBuy === true).sort(sortName).reverse();
-            console.log(sorting);
-            console.log(rez);
+            // console.log(sorting);
+            // console.log(rez);
             break;
         case "desc": 
             rez = CART.filter(el => el.isBuy === true).sort((a, b) => Number(b.total) - Number(a.total));
-            console.log(sorting);
-            console.log(rez);
+            // console.log(sorting);
+            // console.log(rez);
             break;
         case "asc": 
             rez = CART.filter(el => el.isBuy === true).sort((a, b) => Number(a.total) - Number(b.total));
-            console.log(sorting);
-            console.log(rez);
+            // console.log(sorting);
+            // console.log(rez);
             break;
     }
     viewPurchasedTable(rez);
@@ -278,7 +300,54 @@ function sumPurchasedTotal(cart){
     return cart.reduce((acc, curr)=> {return acc + curr.total;}, 0);
 }
 
+const DISCOUNT = [
+    {
+        promo: 'qwe',
+        type: 'fixed', //'percent',
+        value: 15,
+        isUsed: false,
+    },
+    {
+        promo: 'xyz',
+        type: 'percent',
+        value: 5,
+        isUsed: false,
+    }
+];
 
+function checkAndApplyDiscount(){
+    const discPromo = document.getElementById('discountField').value;
+    if(discPromo === ''){
+        topPanel.error("Enter promo code");
+        return false;
+    }
+    const index = DISCOUNT.findIndex(el => el.promo === discPromo);
+    if(index === -1){
+        topPanel.error("Promo code not found");
+        return false;
+    }
+    const disc = DISCOUNT[index];
+    if(disc.isUsed){
+        topPanel.error("This promo already used");
+        return false;
+    }
+    let newTotal = calcDiscount(disc);
+    DISCOUNT[index].isUsed = true;
+    document.getElementById('discValue').innerText = disc.value + (disc.type === 'fixed' ? ' UAH' : "%");
+    document.getElementById('totalWithDisc').innerText = (newTotal).toFixed(2);
+    document.getElementById('discountField').value = '';
+}
+
+function calcDiscount(disc){
+    const {type, value} = disc; //деструктуризація
+    const sumTotalValue = sumTotal();
+    switch(type){
+        case "fixed": 
+            return sumTotalValue - value;
+        case "percent":
+            return sumTotalValue - (sumTotalValue / 100 * value);
+    }
+}
 
 
 

@@ -35,7 +35,7 @@
 
                 </div>
         
-                <div class="card">
+                <div class="card mb-4">
 
                     <div class="card-header"><h4>Products in cart</h4></div>
                     <div class="card-body">
@@ -53,14 +53,31 @@
                             <tbody id="cart-tbody"></tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="5">TOTAL</td> <!-- rowspan - розтягнути на рядки -->
+                                    <td colspan="5">SUBTOTAL</td> <!-- rowspan - розтягнути на рядки -->
                                     <td id="cart-total"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">Discount</td>
+                                    <td id="discValue"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">TOTAL</td>
+                                    <td id="totalWithDisc"></td>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
         
                 </div>
+
+                <div class="card">
+                    <div class="card-header">Discount</div>
+                    <div class="card-body ">
+                        <input type="text" class="form-control" id="discountField">
+                        <button type="button" class="btn btn-info" onclick="checkAndApplyDiscount()">Apply</button>
+                    </div>
+                </div>
+
             </div>
             <div class="col-4" style="font-family:'Courier New', Courier, monospace;">
                 <div class="card mb-4 mt-5">
@@ -95,6 +112,9 @@
                         </table>
                     </div>
                 </div>
+                
+
+            
             </div>
         </div>
         
