@@ -217,7 +217,7 @@ function changeProdStatus(name){
 
 function setSorting(){
     const sorting = document.getElementById('sorting').value;
-    let rez = {};
+    let rez = [];
     switch(sorting){
         case "az": 
             rez = CART.filter(el => el.isBuy === true).sort(sortName);
