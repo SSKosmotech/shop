@@ -240,6 +240,12 @@ function changeProdStatus(name){
 function setSorting(){
     const sorting = document.getElementById('sorting').value;
     let rez = [];
+    rez = sortCart(sorting);
+    viewPurchasedTable(rez);
+    // return rez;
+}
+
+function sortCart(sorting){
     switch(sorting){
         case "az": 
             rez = CART.filter(el => el.isBuy === true).sort(sortName);
@@ -262,9 +268,9 @@ function setSorting(){
             // console.log(rez);
             break;
     }
-    viewPurchasedTable(rez);
-    // return rez;
+    return rez;
 }
+
 
 function sortName(a, b) {
     if(a.name < b.name){
@@ -336,6 +342,11 @@ function checkAndApplyDiscount(){
     document.getElementById('discValue').innerText = disc.value + (disc.type === 'fixed' ? ' UAH' : "%");
     document.getElementById('totalWithDisc').innerText = (newTotal).toFixed(2);
     document.getElementById('discountField').value = '';
+    
+    let newTotalPurchased = calcDiscountPurchased(disc);
+    document.getElementById('disc-value-receipt').innerText = disc.value + (disc.type === 'fixed' ? ' UAH' : "%");
+    document.getElementById('total-with-disc-receipt').innerText = (newTotalPurchased).toFixed(2);
+
 }
 
 function calcDiscount(disc){
@@ -348,6 +359,22 @@ function calcDiscount(disc){
             return sumTotalValue - (sumTotalValue / 100 * value);
     }
 }
+
+function calcDiscountPurchased(disc){
+    const {type, value} = disc; //деструктуризація
+    debugger
+    const sorting = document.getElementById('sorting').value;
+    let sortingCart = sortCart(sorting);
+    // setSorting();
+    const sumTotalValuePurchased = sumPurchasedTotal(sortingCart);
+    switch(type){
+        case "fixed": 
+            return sumTotalValuePurchased - value;
+        case "percent":
+            return sumTotalValuePurchased - (sumTotalValuePurchased / 100 * value);
+    }
+}
+
 
 
 
