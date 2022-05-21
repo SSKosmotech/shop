@@ -242,7 +242,6 @@ function setSorting(){
     let rez = [];
     rez = sortCart(sorting);
     viewPurchasedTable(rez);
-    // return rez;
 }
 
 function sortCart(sorting){
