@@ -241,7 +241,7 @@ function setSorting(){
             break;
     }
     viewPurchasedTable(rez);
-    return rez;
+    // return rez;
 }
 
 function sortName(a, b) {
